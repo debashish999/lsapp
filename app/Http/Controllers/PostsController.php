@@ -14,6 +14,20 @@ class PostsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+
+     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth',['except' => ['index','show']]);
+    }
+
+
+
     public function index()
     {
         
@@ -56,6 +70,7 @@ class PostsController extends Controller
             $post = new Post();
             $post->title = $request->input('title');
             $post->body = $request->input('body');
+            $post->user_id = auth()->user()->id;
             $post->save();
             return redirect('/posts');
 
@@ -82,8 +97,16 @@ class PostsController extends Controller
      */
     public function edit($id)
     {
-        //
+        //check for correct user
+        
+
+
         $post =  Post::find($id);
+
+        if(auth()->user()->id != $post->user_id){
+            return redirect('/posts');
+
+        }
         return view('posts.edit')->with('post',$post);
     }
 
@@ -121,6 +144,11 @@ class PostsController extends Controller
     {
         //
         $post = Post::find($id);
+
+        if(auth()->user()->id != $post->user_id){
+            return redirect('/posts');
+
+        }
         $post->delete();
         return redirect('/posts');
         
