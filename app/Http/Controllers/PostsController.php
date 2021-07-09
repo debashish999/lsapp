@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 
 class PostsController extends Controller
@@ -152,7 +153,7 @@ class PostsController extends Controller
             [
                 'title' => 'required',
                 'body' => 'required',
-                'cover_image' => 'image|nullable|max:1999'
+                
             ]
             );
 
@@ -207,8 +208,17 @@ class PostsController extends Controller
             return redirect('/posts')->with('error','Unauthorized page');
 
         }
-        $post->delete();
-        return redirect('/posts')->with('success','Post Deleted');
+
+        if($post->cover_image != 'noimage.jpg'){
+            
+            //delete image
+            \Storage::delete('public/cover_images/'.$post->cover_image);
+
+
+        }
+
+            $post->delete();
+            return redirect('/posts')->with('success','Post Deleted');
         
     }
 }

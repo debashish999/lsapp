@@ -21,7 +21,10 @@
 
 </div>
 <div class ="form-group">
-{{Form::file('cover_image')}}
+{{Form::file('cover_image',['onchange' =>'loadFile(event)'])}}
+<hr>
+
+    <img id="preview">
 
     </div>
 
@@ -35,9 +38,25 @@
 
 
 @endsection
+
+<script>
+loadFile =function(event){
+    let output = document.getElementById('preview');
+    output.src = URL.createObjectURL(event.target.files[0]);
+
+}
+
+
+
+</script>
 <style>
 .container{
     width:60%;
+}
+
+#preview{
+    width:20%;
+    
 }
 
 </style>
