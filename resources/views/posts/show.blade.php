@@ -6,10 +6,12 @@
 @section('content')
 
 
-<a href='/posts' class='btn btn-default'>GoBack</a>
+<a href='/posts' class='btn btn-lg btn-info'>GoBack</a>
 
 
 <h1>{{ $post->title }}</h1>
+<img style="width:50%" src="/storage/cover_images/{{ $post->cover_image}}">
+
 <div>
 {{ $post->body }}
 </div>
